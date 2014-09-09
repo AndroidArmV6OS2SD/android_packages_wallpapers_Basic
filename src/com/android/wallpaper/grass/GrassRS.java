@@ -36,7 +36,7 @@ import android.os.Bundle;
 import android.text.format.Time;
 import com.android.wallpaper.R;
 import com.android.wallpaper.RenderScriptScene;
-
+import android.util.Log;
 import java.util.TimeZone;
 import java.util.Calendar;
 
@@ -96,16 +96,18 @@ class GrassRS extends RenderScriptScene {
         if (mLocationUpdater == null) {
             mLocationUpdater = new LocationUpdater();
             try {
-              mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+              mLocationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER,
                       LOCATION_UPDATE_MIN_TIME, LOCATION_UPDATE_MIN_DISTANCE, mLocationUpdater);
             } catch (java.lang.IllegalArgumentException e) {
-              if (!e.getMessage().equals("provider=network")) {
+              if (!e.getMessage().equals("provider=passive")) {
+				Log.d(LOG_TAG, "requestLocationUpdates barfed up an exception\n");
                 throw e;
               }
             }
         }
 
         updateLocation();
+
     }
 
     @Override
